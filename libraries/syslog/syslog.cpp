@@ -443,7 +443,7 @@ void logger::print_message(const char *format, va_list args)
 *	@param	c		format placeholder code
 *	@params	args	format arguments list
 **/
-void logger::print_format_placeholder(const char c, va_list args) 
+void logger::print_format_placeholder(const char c, va_list& args) 
 {
 	if (c == '\0') 
 	{

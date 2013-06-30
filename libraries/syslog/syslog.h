@@ -205,7 +205,7 @@ private:
 	*	@param	c		format placeholder code
 	*	@params	args	format arguments list
 	**/
-	static void print_format_placeholder(const char c, va_list args);
+	static void print_format_placeholder(const char c, va_list& args);
 };
 
 /**
