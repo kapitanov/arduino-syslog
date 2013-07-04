@@ -56,7 +56,7 @@ public:
 	*	Constructor
 	*	@param	enable	indicates whether current log writer instance is allowed to write any data into log
 	**/
-	log_event(bool enable);
+	explicit log_event(bool enable);
 
 	/**
 	*	Destructor
@@ -98,7 +98,7 @@ public:
 	*	@param	baud		serial port baud rate
 	*	@param	max_level	maximum logging level
 	**/
-	void init(const long baud, const log_level max_level = LOG_DEBUG);
+	void init(const int16_t baud, const log_level max_level = LOG_DEBUG);
 
 	/**
 	*	Writes a formatted message with ERR log level into log
@@ -156,7 +156,7 @@ private:
 	*	@param	format	format string
 	*	@params	args	format arguments list
 	**/
-	void print(log_level level, const char* format, va_list args);
+	void print(log_level level, const char* format, va_list& args);
 
 	/**
 	*	Writes a formatted message into log
@@ -164,7 +164,7 @@ private:
 	*	@param	format	format string
 	*	@params	args	format arguments list
 	**/
-	void print(log_level level, const __FlashStringHelper* format, va_list args);
+	void print(log_level level, const __FlashStringHelper* format, va_list& args);
 
 	/**
 	*	Writes a log message header
@@ -184,21 +184,21 @@ private:
 	*	@param	precision	amount of decimal places
 	*	@param	placeholder	a placeholder character
 	**/
-	static void print_formatted_number(int value, int precision, char placeholder = '0');
+	static void print_formatted_number(int16_t value, int8_t precision, char placeholder = '0');
 
 	/**
 	*	Writes a formatted message into log
 	*	@param	format	format string
 	*	@params	args	format arguments list
 	**/
-	static void print_message(const char* format, va_list args);
+	static void print_message(const char* format, va_list& args);
 
 	/**
 	*	Writes a formatted message into log
 	*	@param	format	format string
 	*	@params	args	format arguments list
 	**/
-	static void print_message(const __FlashStringHelper* format, va_list args);
+	static void print_message(const __FlashStringHelper* format, va_list& args);
 
 	/**
 	*	Writes a format message placeholder into log
