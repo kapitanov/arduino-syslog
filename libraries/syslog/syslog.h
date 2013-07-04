@@ -5,24 +5,24 @@
 
 /**
 *	Log text format string
-*	+-----------+-------------------------------------+-------------------------------+
-*	|	Format	|	Description							|	Argument type				|
-*	+-----------+-------------------------------------+-------------------------------+
-*	|	%%		|	'%'									|	-							|
-*	|	%s		|	string								|	char*						|
-*	|	%S		|	string (stored within PGMSPACE)		|	const __FlashStringHelper*	|
-*	|	%c		|	char								|	char						|
-*	|	%d		|	integer								|	int							|
-*	|	%l		|	long								|	long						|
-*	|	%x		|	integer (hex)						|	int							|
-*	|	%X		|	integer (hex with '0x' prefix)		|	int							|
-*	|	%b		|	integer (binary)					|	int							|
-*	|	%B		|	integer (binary with '0b' prefix)	|	int							|
-*	|	%t		|	boolean ('t' or 'f')				|	bool						|
-*	|	%T		|	boolean ('true' or 'false')			|	bool						|
-*	|	%f		|	float point value					|	float*						|
-*	|	%F		|	float point value					|	double*						|
-*	+-----------+-------------------------------------+-------------------------------+
+*	+---------------+-----------------------------------------------+---------------------------------------+
+*	|       Format	|       Description                             |       Argument type                   |
+*	+---------------+-----------------------------------------------+---------------------------------------+
+*	|       %%      |       '%'                                     |        -                              |
+*	|       %s      |       string                                  |        char*                          |
+*	|       %S      |       string (stored within PGMSPACE)         |        const __FlashStringHelper*     |
+*	|       %c      |       char                                    |        char                           |
+*	|       %d      |       integer                                 |        int                            |
+*	|       %l      |       long                                    |        long                           |
+*	|       %x      |       integer (hex)                           |        int                            |
+*	|       %X      |       integer (hex with '0x' prefix)          |        int                            |
+*	|       %b      |       integer (binary)                        |        int                            |
+*	|       %B      |       integer (binary with '0b' prefix)       |        int                            |
+*	|       %t      |       boolean ('t' or 'f')                    |        bool                           |
+*	|       %T      |       boolean ('true' or 'false')             |        bool                           |
+*	|       %f      |       float point value                       |        float*                         |
+*	|       %F      |       float point value                       |        double*                        |
+*	+---------------+-----------------------------------------------+---------------------------------------+
 **/
 
 /**
