@@ -88,6 +88,18 @@ private:
 class systime;
 
 /**
+* Log indentation token
+**/
+class log_indent
+{
+public:
+	/**
+	*	Destructor
+	**/
+	~log_indent();
+};
+
+/**
 *	Logger class
 **/
 class logger
@@ -95,10 +107,10 @@ class logger
 public:
 	/**
 	*	Initializes logging
-	*	@param	baud		serial port baud rate
 	*	@param	max_level	maximum logging level
 	**/
-	void init(const int16_t baud, const log_level max_level = LOG_DEBUG);
+	void init(const log_level max_level = LOG_DEBUG);
+
 
 	/**
 	*	Writes a formatted message with ERR log level into log
@@ -145,10 +157,18 @@ public:
 	**/
 	log_event begin_event(log_level level);
 
+	/**
+	*	Starts indentation of output string
+	*	@returns	log indentation token
+	**/
+	log_indent indent();
+
 private:
 	log_level _max_level;
+	uint8_t _indent;
 
 	friend class log_event;
+	friend class log_indent;
 
 	/**
 	*	Writes a formatted message into log
@@ -169,8 +189,9 @@ private:
 	/**
 	*	Writes a log message header
 	*	@param	level	log level
+	*	@param indent	indentation level
 	**/
-	static void print_header(log_level level);
+	static void print_header(log_level level, uint8_t indent);
 
 	/**
 	*	Writes a formatted local time into log

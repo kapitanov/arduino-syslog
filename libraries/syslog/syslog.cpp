@@ -141,10 +141,10 @@ struct systime
 	{
 		systime time;
 
-		uint16_t ms = millis();
-		uint16_t sec = ms / 1000;
-		uint16_t min = sec / 60;
-		uint16_t h = min / 60;
+		uint32_t ms = millis();
+		uint32_t sec = ms / 1000;
+		uint32_t min = sec / 60;
+		uint32_t h = min / 60;
 		sec = sec % 60;
 		min = min % 60;
 		ms = ms % 1000;
@@ -217,6 +217,21 @@ void log_event::printf(const __FlashStringHelper* msg, ...)
 
 /*
 ************************************************************************
+*	log_indent
+*	Log indentation token
+************************************************************************
+*/
+
+/**
+*	Destructor
+**/
+log_indent::~log_indent()
+{
+	--syslog._indent;
+}
+
+/*
+************************************************************************
 *	log_t
 *	Logger class
 ************************************************************************
@@ -228,10 +243,9 @@ void log_event::printf(const __FlashStringHelper* msg, ...)
 *	Initializes logging
 *	@param	baud	serial port baud rate
 **/
-void logger::init(const int16_t baud, const log_level max_level)
+void logger::init( const log_level max_level)
 {
 	_max_level = max_level;
-	Serial.begin(baud);
 }
 
 /**
@@ -318,8 +332,18 @@ log_event logger::begin_event(log_level level)
 		return log_event(false);
 	}
 
-	print_header(level);
+	print_header(level, syslog._indent);
 	return log_event(true);
+}
+
+/**
+*	Starts indentation of output string
+*	@returns	log indentation token
+**/
+log_indent logger::indent()
+{
+	++_indent;
+	return log_indent();
 }
 
 /**	private members	**/
@@ -337,7 +361,7 @@ void logger::print(log_level level, const char* format, va_list& args)
 		return;
 	}
 
-	print_header(level);
+	print_header(level, _indent);
 
 	print_message(format, args);
 	Serial.println();
@@ -357,7 +381,7 @@ void logger::print(log_level level, const __FlashStringHelper* format, va_list& 
 		return;
 	}
 
-	print_header(level);
+	print_header(level, _indent);
 
 	print_message(format, args);
 	Serial.println();
@@ -367,8 +391,9 @@ void logger::print(log_level level, const __FlashStringHelper* format, va_list& 
 /**
 *	Writes a log message header
 *	@param	level	log level
-*/
-void logger::print_header(log_level level)
+*	@param indent	indentation level
+**/
+void logger::print_header(log_level level, uint8_t indent)
 {
 	const __FlashStringHelper* header = NULL;
 	switch (level)
@@ -393,6 +418,12 @@ void logger::print_header(log_level level)
 	// LOG LEVEL
 	Serial.print(header);
 	Serial.print('\t');
+
+	// INDENTATION
+	for (uint8_t i = 0; i < indent * 2; i++)
+	{
+		Serial.print(' ');
+	}
 }
 
 /**
@@ -462,16 +493,26 @@ void logger::print_message(const __FlashStringHelper* format_ptr, va_list& args)
 void logger::print_message(const char *format, va_list& args) 
 {
 	// loop through format string
-	while (*format++)
+	char c;
+	--format;
+	while(true)
 	{
-		if (*format == '%') 
+		++format;
+		c = *format;
+		if(c == '\0')
+		{
+			break;
+		}
+
+		if (c == '%') 
 		{
 			++format;
-			print_format_placeholder(*format, args);
+			c = *format;
+			print_format_placeholder(c, args);
 		}
 		else
 		{
-			Serial.print(*format);
+			Serial.print(c);
 		}
 	}
 }
